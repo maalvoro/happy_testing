@@ -9,8 +9,8 @@ export default async function NewDishPage() {
     redirect('/login');
   }
   return (
-    <div className="max-w-3xl mx-auto p-8">
-      <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800 tracking-tight">Agregar Platillo</h1>
+    <div className="max-w-3xl mx-auto p-8" data-testid="new-dish-container">
+      <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800 tracking-tight" data-testid="new-dish-title">Agregar Platillo</h1>
       <NewDishForm />
     </div>
   );

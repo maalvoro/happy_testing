@@ -66,57 +66,57 @@ export default function EditDishForm({ id }: { id: string }) {
     }
   };
 
-  if (loading || !form) return <div className="p-8">Cargando...</div>;
+  if (loading || !form) return <div className="p-8" data-testid="edit-dish-loading">Cargando...</div>;
 
   return (
-    <div className="py-10 px-2 max-w-5xl mx-auto">
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center md:w-1/2">
+    <div className="py-10 px-2 max-w-5xl mx-auto" data-testid="edit-dish-container">
+      <div className="flex flex-col md:flex-row gap-8" data-testid="edit-dish-content">
+        <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center md:w-1/2" data-testid="edit-dish-preview">
           {form.imageUrl ? (
-            <Image src={form.imageUrl} alt={form.name} width={600} height={256} className="rounded-xl w-full h-64 object-cover mb-4 shadow" />
+            <Image src={form.imageUrl} alt={form.name} width={600} height={256} className="rounded-xl w-full h-64 object-cover mb-4 shadow" data-testid="edit-dish-image" />
           ) : (
-            <div className="bg-gray-200 rounded-xl w-full h-64 flex items-center justify-center text-gray-400 mb-4">Sin imagen</div>
+            <div className="bg-gray-200 rounded-xl w-full h-64 flex items-center justify-center text-gray-400 mb-4" data-testid="edit-dish-no-image">Sin imagen</div>
           )}
-          <span className="bg-green-400 text-white text-xs font-bold px-4 py-2 rounded-full shadow mb-4 tracking-wide uppercase">{form.quickPrep ? 'Rápido' : `${form.prepTime + form.cookTime} min`}</span>
-          <h2 className="font-extrabold text-2xl mb-2 text-gray-800 text-center">{form.name}</h2>
-          <p className="text-gray-600 mb-4 text-center">{form.description}</p>
+          <span className="bg-green-400 text-white text-xs font-bold px-4 py-2 rounded-full shadow mb-4 tracking-wide uppercase" data-testid="edit-dish-time-badge">{form.quickPrep ? 'Rápido' : `${form.prepTime + form.cookTime} min`}</span>
+          <h2 className="font-extrabold text-2xl mb-2 text-gray-800 text-center" data-testid="edit-dish-preview-name">{form.name}</h2>
+          <p className="text-gray-600 mb-4 text-center" data-testid="edit-dish-preview-description">{form.description}</p>
         </div>
-        <form className="bg-white rounded-2xl shadow-lg p-8 flex-1 flex flex-col gap-6" onSubmit={handleSubmit}>
-          <h3 className="text-xl font-bold mb-2 text-green-600">Editar información</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form data-testid="edit-dish-form" className="bg-white rounded-2xl shadow-lg p-8 flex-1 flex flex-col gap-6" onSubmit={handleSubmit}>
+          <h3 className="text-xl font-bold mb-2 text-green-600" data-testid="edit-dish-form-title">Editar información</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-testid="edit-dish-fields">
             <div>
-              <label className="block mb-1 font-semibold">Nombre</label>
-              <input name="name" value={form.name} onChange={handleChange} className="w-full border rounded p-3 text-lg" required placeholder="Nombre del platillo" />
+              <label className="block mb-1 font-semibold" data-testid="edit-dish-name-label">Nombre</label>
+              <input data-testid="edit-dish-name" name="name" value={form.name} onChange={handleChange} className="w-full border rounded p-3 text-lg" required placeholder="Nombre del platillo" />
             </div>
             <div>
-              <label className="block mb-1 font-semibold">Calorías totales</label>
-              <input type="number" name="calories" value={form.calories || ''} onChange={handleChange} className="w-full border rounded p-3 text-lg" placeholder="Calorías" min="0" />
+              <label className="block mb-1 font-semibold" data-testid="edit-dish-calories-label">Calorías totales</label>
+              <input type="number" name="calories" value={form.calories || ''} onChange={handleChange} className="w-full border rounded p-3 text-lg" placeholder="Calorías" min="0" data-testid="edit-dish-calories" />
             </div>
             <div className="md:col-span-2">
-              <label className="block mb-1 font-semibold">Descripción</label>
-              <textarea name="description" value={form.description} onChange={handleChange} className="w-full border rounded p-3 text-lg" required placeholder="Descripción del platillo" />
+              <label className="block mb-1 font-semibold" data-testid="edit-dish-description-label">Descripción</label>
+              <textarea data-testid="edit-dish-description" name="description" value={form.description} onChange={handleChange} className="w-full border rounded p-3 text-lg" required placeholder="Descripción del platillo" />
             </div>
             <div>
-              <label className="block mb-1 font-semibold">Min. preparación</label>
-              <input type="number" name="prepTime" value={form.prepTime} onChange={handleChange} className="w-full border rounded p-3 text-lg" required />
+              <label className="block mb-1 font-semibold" data-testid="edit-dish-preptime-label">Min. preparación</label>
+              <input data-testid="edit-dish-preptime" type="number" name="prepTime" value={form.prepTime} onChange={handleChange} className="w-full border rounded p-3 text-lg" required />
             </div>
             <div>
-              <label className="block mb-1 font-semibold">Min. cocción</label>
-              <input type="number" name="cookTime" value={form.cookTime} onChange={handleChange} className="w-full border rounded p-3 text-lg" required />
+              <label className="block mb-1 font-semibold" data-testid="edit-dish-cooktime-label">Min. cocción</label>
+              <input data-testid="edit-dish-cooktime" type="number" name="cookTime" value={form.cookTime} onChange={handleChange} className="w-full border rounded p-3 text-lg" required />
             </div>
-            <div className="md:col-span-2 flex items-center gap-2">
-              <input type="checkbox" name="quickPrep" checked={form.quickPrep} onChange={handleChange} />
-              <label className="font-semibold">Preparación rápida</label>
+            <div className="md:col-span-2 flex items-center gap-2" data-testid="edit-dish-quickprep-row">
+              <input data-testid="edit-dish-quickprep" type="checkbox" name="quickPrep" checked={form.quickPrep} onChange={handleChange} />
+              <label className="font-semibold" data-testid="edit-dish-quickprep-label">Preparación rápida</label>
             </div>
             <div className="md:col-span-2">
-              <label className="block mb-1 font-semibold">URL de imagen</label>
-              <input name="imageUrl" value={form.imageUrl || ''} onChange={handleChange} className="w-full border rounded p-3 text-lg" placeholder="URL de imagen" />
+              <label className="block mb-1 font-semibold" data-testid="edit-dish-image-label">URL de imagen</label>
+              <input data-testid="edit-dish-image-url" name="imageUrl" value={form.imageUrl || ''} onChange={handleChange} className="w-full border rounded p-3 text-lg" placeholder="URL de imagen" />
             </div>
           </div>
-          <div className="mt-2">
-            <label className="block font-bold mb-2 text-green-600">Pasos de preparación</label>
+          <div className="mt-2" data-testid="edit-dish-steps-section">
+            <label className="block font-bold mb-2 text-green-600" data-testid="edit-dish-steps-title">Pasos de preparación</label>
             {form.steps && form.steps.map((step, idx) => (
-              <div key={idx} className="flex gap-2 mb-2">
+              <div key={idx} className="flex gap-2 mb-2" data-testid="edit-dish-step-row">
                 <input
                   type="text"
                   value={step}
@@ -124,16 +124,17 @@ export default function EditDishForm({ id }: { id: string }) {
                   className="w-full border rounded p-2"
                   placeholder={`Paso ${idx + 1}`}
                   required={idx === 0}
+                  data-testid="edit-dish-step-input"
                 />
                 {form.steps.length > 1 && (
-                  <button type="button" onClick={() => removeStep(idx)} className="text-red-500 font-bold">×</button>
+                  <button type="button" onClick={() => removeStep(idx)} className="text-red-500 font-bold" data-testid="edit-dish-step-remove">×</button>
                 )}
               </div>
             ))}
-            <button type="button" onClick={addStep} className="text-blue-500 font-semibold mt-2">+ Agregar paso</button>
+            <button data-testid="edit-dish-add-step" type="button" onClick={addStep} className="text-blue-500 font-semibold mt-2">+ Agregar paso</button>
           </div>
-          {error && <p className="text-red-500">{error}</p>}
-          <button type="submit" className="w-full bg-green-500 text-white py-3 rounded-xl font-bold text-lg hover:bg-green-600 transition mt-4" disabled={loading}>
+          {error && <p className="text-red-500" data-testid="edit-dish-error">{error}</p>}
+          <button data-testid="edit-dish-submit" type="submit" className="w-full bg-green-500 text-white py-3 rounded-xl font-bold text-lg hover:bg-green-600 transition mt-4" disabled={loading}>
             {loading ? 'Guardando...' : 'Guardar'}
           </button>
         </form>

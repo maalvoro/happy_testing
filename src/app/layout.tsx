@@ -26,22 +26,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 min-h-screen`}>
-        <header className="w-full bg-white shadow flex items-center px-8 py-4 mb-8">
-          <div className="flex items-center">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 min-h-screen`} data-testid="layout-body">
+        <header className="w-full bg-white shadow flex items-center px-8 py-4 mb-8" data-testid="layout-header">
+          <div className="flex items-center" data-testid="layout-brand">
             <span className="mr-2">
               <Image src="/next.svg" alt="NutriApp" width={32} height={32} className="h-8 w-8" />
             </span>
             <span className="font-bold text-lg text-green-600">NutriApp</span>
           </div>
-          <nav className="ml-auto flex gap-6 items-center">
-            <Link href="/dishes" className="text-gray-700 hover:text-green-500 font-semibold">Recetas</Link>
+          <nav className="ml-auto flex gap-6 items-center" data-testid="layout-nav">
+            <Link href="/dishes" className="text-gray-700 hover:text-green-500 font-semibold" data-testid="nav-dishes-link">Recetas</Link>
             <form action="/api/logout" method="POST">
-              <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-500 transition">Logout</button>
+              <button type="submit" className="bg-red-400 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-500 transition" data-testid="nav-logout-button">Logout</button>
             </form>
           </nav>
         </header>
-        <main className="max-w-5xl mx-auto w-full px-4">
+        <main className="max-w-5xl mx-auto w-full px-4" data-testid="layout-main">
           {children}
         </main>
       </body>

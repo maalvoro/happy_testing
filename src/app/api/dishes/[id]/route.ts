@@ -1,12 +1,11 @@
 import { requireSession } from '@/app/lib/auth';
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@/generated/prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 // GET: Get dish by id
-export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
-  const { id } = await context.params;
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
   let userId;
   try {
     userId = await requireSession();
@@ -14,7 +13,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
   try {
-    const dish = await prisma.dish.findUnique({ where: { id: Number(id) } });
+    const dish = await prisma.dish.findUnique({ where: { id: Number(context.params.id) } });
     if (!dish || dish.userId !== Number(userId)) {
       return NextResponse.json({ error: 'Platillo no encontrado o no autorizado' }, { status: 404 });
     }
@@ -27,8 +26,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
 }
 
 // PUT: Edit a dish
-export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
-  const { id } = await context.params;
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
   let userId;
   try {
     userId = await requireSession();
@@ -39,14 +37,14 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
   const { name, description, quickPrep, prepTime, cookTime, imageUrl, steps, calories } = data;
 
   // Verificar que el platillo pertenece al usuario
-  const dishCheck = await prisma.dish.findUnique({ where: { id: Number(id) } });
+  const dishCheck = await prisma.dish.findUnique({ where: { id: Number(context.params.id) } });
   if (!dishCheck || dishCheck.userId !== Number(userId)) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
   }
 
   try {
     const dish = await prisma.dish.update({
-      where: { id: Number(id) },
+      where: { id: Number(context.params.id) },
       data: {
         name,
         description,
@@ -67,8 +65,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
 }
 
 // DELETE: Remove a dish
-export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
-  const { id } = await context.params;
+export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
   let userId;
   try {
     userId = await requireSession();
@@ -76,12 +73,12 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
   // Verificar que el platillo pertenece al usuario
-  const dishCheck = await prisma.dish.findUnique({ where: { id: Number(id) } });
+  const dishCheck = await prisma.dish.findUnique({ where: { id: Number(context.params.id) } });
   if (!dishCheck || dishCheck.userId !== Number(userId)) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
   }
   try {
-    await prisma.dish.delete({ where: { id: Number(id) } });
+    await prisma.dish.delete({ where: { id: Number(context.params.id) } });
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
     let message = 'Unknown error';
