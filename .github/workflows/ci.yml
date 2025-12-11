@@ -20,11 +20,12 @@ jobs:
           node -e "
             try {
               const fs = require('fs');
-              const data = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+              const data = JSON.parse(fs.readFileSync('coverage/coverage-final.json', 'utf8'));
               const total = data.total;
-              Object.keys(total).forEach(key => {
-                console.log(\`| \${key} | \${total[key].pct}% |\`);
-              });
+              console.log(\`| statements | \${total.statements.pct}% |\`);
+              console.log(\`| branches | \${total.branches.pct}% |\`);
+              console.log(\`| functions | \${total.functions.pct}% |\`);
+              console.log(\`| lines | \${total.lines.pct}% |\`);
             } catch (e) {
               console.log('No coverage data found');
             }
