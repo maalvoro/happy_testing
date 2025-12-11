@@ -17,6 +17,7 @@ jobs:
           echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
           echo "| Metric | Percentage |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|------------|" >> $GITHUB_STEP_SUMMARY
+          ls -la coverage/ || echo "Coverage dir not found"
           node -e "
             try {
               const fs = require('fs');
@@ -27,6 +28,6 @@ jobs:
               console.log(\`| functions | \${total.functions.pct}% |\`);
               console.log(\`| lines | \${total.lines.pct}% |\`);
             } catch (e) {
-              console.log('No coverage data found');
+              console.log('No coverage data found or error parsing');
             }
           " >> $GITHUB_STEP_SUMMARY
