@@ -17,4 +17,15 @@ jobs:
           echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
           echo "| Metric | Percentage |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|------------|" >> $GITHUB_STEP_SUMMARY
-          grep -E "(lines|functions|branches|statements)" coverage/lcov-report/index.html | sed 's/<[^>]*>//g' | awk '{print "| " $1 " | " $2 " |"}' >> $GITHUB_STEP_SUMMARY || echo "No coverage data found" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            try {
+              const fs = require('fs');
+              const data = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+              const total = data.total;
+              Object.keys(total).forEach(key => {
+                console.log(\`| \${key} | \${total[key].pct}% |\`);
+              });
+            } catch (e) {
+              console.log('No coverage data found');
+            }
+          " >> $GITHUB_STEP_SUMMARY
