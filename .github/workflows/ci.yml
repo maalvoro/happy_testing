@@ -12,22 +12,10 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run test:coverage
-      - name: Publish Coverage Summary
+      - name: Publish Test Summary
         run: |
-          echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
-          echo "| Metric | Percentage |" >> $GITHUB_STEP_SUMMARY
-          echo "|--------|------------|" >> $GITHUB_STEP_SUMMARY
-          ls -la coverage/ || echo "Coverage dir not found"
-          node -e "
-            try {
-              const fs = require('fs');
-              const data = JSON.parse(fs.readFileSync('coverage/coverage-final.json', 'utf8'));
-              const total = data.total;
-              console.log(\`| statements | \${total.statements.pct}% |\`);
-              console.log(\`| branches | \${total.branches.pct}% |\`);
-              console.log(\`| functions | \${total.functions.pct}% |\`);
-              console.log(\`| lines | \${total.lines.pct}% |\`);
-            } catch (e) {
-              console.log('No coverage data found or error parsing');
-            }
-          " >> $GITHUB_STEP_SUMMARY
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          npm test 2>&1 | tail -10 >> $GITHUB_STEP_SUMMARY || echo "Tests failed" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+      
